@@ -1,0 +1,34 @@
+name: Bump version
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check upstream version
+        id: ver
+        run: |
+          git clone --depth 1 --branch elanmoc2 https://gitlab.freedesktop.org/Depau/libfprint.git /tmp/upstream
+          upstream=$(grep -m1 -oP "version:\s*'\K[^']+" /tmp/upstream/meson.build || true)
+          current=$(grep -m1 '^Version:' libfprint-elanmoc2.spec | awk '{print $2}')
+          echo "upstream=$upstream current=$current"
+          echo "upstream=$upstream" >> "$GITHUB_OUTPUT"
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+
+      - name: Bump spec
+        if: steps.ver.outputs.upstream != '' && steps.ver.outputs.upstream != steps.ver.outputs.current
+        run: |
+          sed -i "s/^Version:.*/Version:        ${{ steps.ver.outputs.upstream }}/" libfprint-elanmoc2.spec
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Update to ${{ steps.ver.outputs.upstream }}"
+          git push
