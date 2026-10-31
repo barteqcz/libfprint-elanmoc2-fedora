@@ -1,4 +1,4 @@
-This repository contains the .spec file to build the `libfprint-elanmoc2` package directly from the [Depau's repo](https://gitlab.freedesktop.org/Depau/libfprint) and share it via a [COPR repo](https://copr.fedorainfracloud.org/coprs/barteqcz/libfprint-elanmoc2/) for Fedora.
+This repository contains the .spec file to build the `libfprint-elanmoc2` package directly from the [Depau's repo](https://gitlab.freedesktop.org/depau/libfprint/-/tree/elanmoc2) and share it via a [COPR repo](https://copr.fedorainfracloud.org/coprs/barteqcz/libfprint-elanmoc2/) for Fedora.
 
 For any details about the package, check the original repository. 
 
